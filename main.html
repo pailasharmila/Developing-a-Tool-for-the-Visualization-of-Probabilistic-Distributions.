@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <style>
+        body {
+            background-color: #ffffff; /* White background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h2 {
+            color: #ffffff; /* White text */
+            font-size: 3.5rem;
+            margin-bottom: 60px;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+            background: rgba(0, 123, 255, 0.5); /* Glass blue background */
+            backdrop-filter: blur(10px); /* Blur effect for glass effect */
+            border-radius: 10px;
+            padding: 20px 40px;
+            box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3); /* Shadow for depth */
+        }
+        .subtitle {
+            color: #007bff; /* Subtitle color */
+            font-size: 1.5rem; /* Smaller size for subtitle */
+            text-align: right;
+            margin-bottom: 60px; /* Space between subtitle and buttons */
+            animation: fadeIn 2s ease-in-out; /* Add fade-in effect */
+        }
+
+        .button-container {
+            display: flex;
+            gap: 200px; /* Increased spacing between buttons */
+            justify-content: center;
+        }
+
+        .btn {
+            width: 300px; /* Enlarged button size */
+            height: 250px;
+            background-color: #a5c8ff; /* Button color */
+            border: 5px solid rgba(0, 123, 255, 0.5); /* Darker blue border for contrast */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 10px 20px rgba(0, 123, 255, 0.6); /* Updated shadow color */
+        }
+
+        .btn::after {
+            content: attr(data-text);
+            position: absolute;
+            bottom: -60px; /* Adjusted label position */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.4rem;
+            color: black; /* Text color matching border */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s ease;
+        }
+
+        .btn:hover::after {
+            bottom: 30px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content">
+        <h2> Visualization of Probability distributions</h2>
+        <div class="subtitle">Decoding Data Visually</div>
+        <br>
+        <div class="button-container">
+            <!-- Button to plot graphs -->
+            <a href="index.html" class="btn" data-text="Plot Distribution">
+                <img src="plot.png" alt="Plot Graphs">
+            </a>
+
+            <!-- Button to compare graphs -->
+            <a href="compare.html" class="btn" data-text="Compare Distribution">
+                <img src="compare.png" alt="Compare Graphs">
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

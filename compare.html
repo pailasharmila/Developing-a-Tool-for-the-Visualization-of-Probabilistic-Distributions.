@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribution Comparisons</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your common styles.css -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .controls:hover {
+            transform: scale(1.02);
+        }
+
+        .label {
+            font-size: 1em; /* Increased label size */
+            display: inline-block;
+            padding: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+            color: #555;
+        }
+
+        .label:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        #fileInput {
+            display: block;
+            margin: 20px 0;
+            padding: 15px; /* Increased padding for better size */
+            font-size: 1.2em; /* Increased font size */
+            border: 2px solid #007bff; /* Border color for visibility */
+            border-radius: 5px;
+            background-color: #fff;
+            color: #007bff;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        #fileInput:hover {
+            background-color: #e7f3ff; /* Light blue background on hover */
+            border-color: #0056b3; /* Darker border on hover */
+        }
+
+        #plot {
+            width: 100%;
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        #calculationDetails {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+        /* Animation for graph updates */
+        .update-animation {
+            animation: popIn 0.5s ease-in-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            transition: border-color 0.3s;
+        }
+
+        select:hover {
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Distribution Comparisons</h1>
+    <input type="file" id="fileInput" accept=".txt" />
+
+    <div class="controls">
+        <label for="nSlider" class="label">Number of Trials (n): </label>
+        <input type="range" id="nSlider" class="slider" min="1" max="100" value="10" />
+        <span id="nValue">10</span>
+        
+        <label for="pSlider" class="label">Probability of Success (p): </label>
+        <input type="range" id="pSlider" class="slider" min="0" max="1" step="0.01" value="0.5" />
+        <span id="pValue">0.50</span>
+    </div>
+
+    <div>
+        <label for="distributionSelect" class="label">Select Distribution to Display:</label>
+        <select id="distributionSelect">
+            <option value="all">All</option>
+            <option value="binomial">Binomial</option>
+            <option value="normal">Normal</option>
+            <option value="poisson">Poisson</option>
+            <option value="exponential">Exponential</option>
+            <option value="uniform">Uniform</option>
+            <option value="geometric">Geometric</option>
+            <option value="chi-square">Chi Square</option>
+            <option value="beta">Beta</option>
+        </select>
+    </div>
+    
+    <div id="plot" class="update-animation"></div>
+    <div id="calculationDetails"></div>
+
+    <script>
+        // Distribution Functions
+        function binomialProbability(n, k, p) {
+            const combination = factorial(n) / (factorial(k) * factorial(n - k));
+            return combination * Math.pow(p, k) * Math.pow(1 - p, n - k);
+        }
+
+        function normalProbability(x, mean, stdDev) {
+            return (1 / (stdDev * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * Math.pow((x - mean) / stdDev, 2));
+        }
+
+        function poissonProbability(k, lambda) {
+            return (Math.pow(lambda, k) * Math.exp(-lambda)) / factorial(k);
+        }
+
+        function exponentialProbability(x, lambda) {
+            return lambda * Math.exp(-lambda * x);
+        }
+
+        function uniformProbability(x, a, b) {
+            return (x >= a && x <= b) ? 1 / (b - a) : 0;
+        }
+
+        function geometricProbability(k, p) {
+            return p * Math.pow(1 - p, k);
+        }
+
+        function chiSquareProbability(x, k) {
+            return (Math.pow(x, (k / 2) - 1) * Math.exp(-x / 2)) / (Math.pow(2, k / 2) * factorial(k / 2 - 1));
+        }
+
+        function betaProbability(x, alpha, beta) {
+            return (Math.pow(x, alpha - 1) * Math.pow(1 - x, beta - 1)) / betaFunction(alpha, beta);
+        }
+
+        function betaFunction(alpha, beta) {
+            return (factorial(alpha - 1) * factorial(beta - 1)) / factorial(alpha + beta - 1);
+        }
+
+        // Factorial function
+        function factorial(num) {
+            if (num === 0 || num === 1) return 1;
+            let result = 1;
+            for (let i = 2; i <= num; i++) result *= i;
+            return result;
+        }
+
+        // Update plots based on sliders or file input
+        function updatePlots() {
+            const n = parseInt(document.getElementById('nSlider').value);
+            const p = parseFloat(document.getElementById('pSlider').value);
+            const lambda = n * p; // For Poisson and Exponential
+            const selectedDistribution = document.getElementById('distributionSelect').value;
+
+            const xValues = Array.from({ length: n + 1 }, (_, k) => k);
+            const data = [];
+
+            if (selectedDistribution === "all" || selectedDistribution === "binomial") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => binomialProbability(n, k, p)),
+                    type: 'bar',
+                    name: 'Binomial',
+                    marker: { color: 'orange' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "normal") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => normalProbability(k, n * p, Math.sqrt(n * p * (1 - p)))),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Normal',
+                    line: { color: 'blue' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "poisson") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => poissonProbability(k, lambda)),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Poisson',
+                    line: { color: 'green' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "exponential") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => exponentialProbability(k, 1 / lambda)),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Exponential',
+                    line: { color: 'red' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "uniform") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => uniformProbability(k, 0, n)),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Uniform',
+                    line: { color: 'purple' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "geometric") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => geometricProbability(k, p)),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Geometric',
+                    line: { color: 'cyan' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "chi-square") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => chiSquareProbability(k, n)),
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Chi Square',
+                    line: { color: 'magenta' }
+                });
+            }
+            if (selectedDistribution === "all" || selectedDistribution === "beta") {
+                data.push({
+                    x: xValues,
+                    y: xValues.map(k => betaProbability(k / n, 2, 5)), // Example parameters for Beta
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Beta',
+                    line: { color: 'yellow' }
+                });
+            }
+
+            const layout = {
+                title: 'Comparison of Distributions',
+                xaxis: { title: 'Value' },
+                yaxis: { title: 'Probability' },
+                barmode: 'overlay',
+                paper_bgcolor: 'rgba(255, 255, 255, 0.9)',
+                plot_bgcolor: 'rgba(255, 255, 255, 0.9)',
+                font: { color: '#333' },
+                showlegend: true,
+                legend: { orientation: 'h', yanchor: 'bottom', y: 1.02, xanchor: 'right', x: 1 },
+                transition: { duration: 500 }
+            };
+
+            Plotly.newPlot('plot', data, layout);
+            document.getElementById('plot').classList.add('update-animation');
+
+            // Update calculation details
+            updateCalculationDetails(n, p);
+        }
+
+        function updateCalculationDetails(n, p) {
+            let details = `<p style="color: #007bff;">n (Number of Trials) = ${n}</p>`;
+            details += `<p style="color: #007bff;">p (Probability of Success) = ${p.toFixed(2)}</p>`;
+            document.getElementById('calculationDetails').innerHTML = details;
+        }
+
+        // Handle file upload
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const data = e.target.result.split(/\r?\n/).map(Number).filter(val => !isNaN(val));
+                if (data.length > 0) {
+                    const n = calculateN(data);
+                    const p = calculateP(data);
+                    if (p >= 0 && p <= 1) { // Validate p
+                        document.getElementById('nSlider').value = n;
+                        document.getElementById('pSlider').value = p.toFixed(2);
+                        updatePlots();
+                    } else {
+                        alert("Invalid probability value. Please ensure p is between 0 and 1.");
+                    }
+                }
+            };
+
+            reader.readAsText(file);
+        });
+
+        // Initialize the plots on page load
+        window.onload = function() {
+            updatePlots();
+        };
+
+        // Attach update function to sliders and dropdown
+        document.getElementById('nSlider').addEventListener('input', updatePlots);
+        document.getElementById('pSlider').addEventListener('input', updatePlots);
+        document.getElementById('distributionSelect').addEventListener('change', updatePlots);
+    </script>
+</body>
+</html>

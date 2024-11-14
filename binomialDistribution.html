@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="binomialDistribution.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Binomial Distribution</h1>
+
+        <!-- Distribution Information -->
+        <div class="distribution-info">
+            <h2><strong>Statistics</strong></h2>
+            <p>The binomial distribution describes the number of successes in a fixed number of independent trials, each with the same probability of success. The formula is given by:</p>
+            <p style="text-align: center"><strong>P(X = k) = C(n, k) * p^k * (1 - p)^(n - k)</strong></p>
+            <p><em>Example:</em> This could represent the number of heads in 10 flips of a coin, where the probability of getting a head is 0.5.</p>
+        </div>
+
+        <!-- Upload Data Section -->
+        <div class="upload-data">
+           <h2>Upload Data</h2>           
+            <input type="file" id="fileInput" accept=".txt">
+            <p id="uploadMessage" class="upload-message">If no data uploaded, then default values are used.</p>
+        </div>
+        <br>
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert-message">Data uploaded successfully</div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="graph-section">
+                <h2>Binomial Distribution Graph</h2>
+                <div class="slider-container">
+                    <label for="nSlider">Number of Trials (n):</label>
+                    <input type="range" id="nSlider" min="1" max="50" value="10" step="1">
+                    <span id="nValue">10</span>
+                </div>
+                <div class="slider-container">
+                    <label for="pSlider">Probability of Success (p):</label>
+                    <input type="range" id="pSlider" min="0" max="1" value="0.5" step="0.01">
+                    <span id="pValue">0.5</span>
+                </div>
+                <div id="binomialPlot"></div>
+            </div>
+
+            <div class="separator"></div> <!-- Vertical separator -->
+
+            <div class="calculation-section">
+                <h2>Calculation</h2>
+                <div id="calculationDetails">Calculation details will appear here.</div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Back to Selection</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update displayed values for sliders
+            const nSlider = document.getElementById('nSlider');
+            const pSlider = document.getElementById('pSlider');
+            const nValue = document.getElementById('nValue');
+            const pValue = document.getElementById('pValue');
+            const binomialPlot = document.getElementById('binomialPlot');
+
+            function updateValues() {
+                nValue.textContent = nSlider.value;
+                pValue.textContent = pSlider.value;
+                plotBinomialDistribution();
+            }
+
+            nSlider.addEventListener('input', updateValues);
+            pSlider.addEventListener('input', updateValues);
+
+            // Plot the binomial distribution
+            function plotBinomialDistribution() {
+                const n = parseInt(nSlider.value);
+                const p = parseFloat(pSlider.value);
+                const xValues = Array.from({ length: n + 1 }, (_, k) => k);
+                const yValues = xValues.map(k => binomialProbability(n, k, p));
+
+                const trace = {
+                    x: xValues,
+                    y: yValues,
+                    type: 'bar',
+                    marker: { color: 'blue' }
+                };
+
+                const layout = {
+                    title: 'Binomial Distribution',
+                    xaxis: { title: 'Number of Successes (k)' },
+                    yaxis: { title: 'Probability' }
+                };
+
+                Plotly.newPlot(binomialPlot, [trace], layout);
+
+                // Update calculation details
+                const calculationDetails = document.getElementById('calculationDetails');
+                calculationDetails.textContent = `P(X = k) = C(n, k) * p^k * (1 - p)^(n - k), with n = ${n} and p = ${p}`;
+            }
+
+            // Binomial probability function
+            function binomialProbability(n, k, p) {
+                const combination = factorial(n) / (factorial(k) * factorial(n - k));
+                return combination * Math.pow(p, k) * Math.pow(1 - p, n - k);
+            }
+
+            // Factorial function
+            function factorial(num) {
+                if (num === 0 || num === 1) return 1;
+                let result = 1;
+                for (let i = 2; i <= num; i++) {
+                    result *= i;
+                }
+                return result;
+            }
+
+            // Initial plot
+            plotBinomialDistribution();
+        });
+    </script>
+</body>
+</html>

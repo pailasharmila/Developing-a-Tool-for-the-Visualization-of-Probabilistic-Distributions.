@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="geometricDistribution.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Geometric Distribution</h1>
+
+        <!-- Distribution Information -->
+        <div class="distribution-info">
+            <h2><strong>Statistics</strong></h2>
+            <p>In a geometric distribution, the probability of the first success on the x-th trial is given by the formula:</p>
+            <p style="text-align: center"><strong>P(X = x) = (1 - p)^(x - 1) * p</strong></p>
+            <p><em>Example:</em> This could represent the number of coin flips needed to get the first heads, where each flip has a probability "p" of landing heads.</p>
+        </div>
+
+        <!-- Upload Data Section -->
+        <div class="upload-data">
+           <h2>Upload Data</h2>
+           <input type="file" id="fileInput" accept=".txt">
+           <p id="uploadMessage" class="upload-message">If no data uploaded, then default values are used.</p>
+        </div>
+        <br>
+
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert-message">Data uploaded successfully</div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="graph-section">
+                <h2>Geometric Distribution Graph</h2>
+                <div class="slider-container">
+                    <label for="probSlider">Probability of Success (p):</label>
+                    <input type="range" id="probSlider" min="0.1" max="1" value="0.5" step="0.01">
+                    <span id="probValue">0.50</span>
+                </div>
+                <div id="geometricPlot"></div>
+            </div>
+
+            <div class="separator"></div> <!-- Vertical separator -->
+
+            <div class="calculation-section">
+                <h2>Calculation</h2>
+                <div id="calculationDetails">Calculation details will appear here.</div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Back to Selection</button>
+    </div>
+</body>
+</html>

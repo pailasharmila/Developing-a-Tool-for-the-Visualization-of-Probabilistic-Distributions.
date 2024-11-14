@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exponential Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="exponentialDistribution.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Exponential Distribution</h1>
+
+        <!-- Distribution Information -->
+        <div class="distribution-info">
+            <h2><strong>Statistics</strong></h2>
+            <p>For a random variable x, with rate parameter "λ", the exponential distribution formula is given by:</p>
+            <p style="text-align: center"><strong>f(x) = λ * exp(-λx) for x ≥ 0</strong></p>
+            <p><em>Example:</em> This distribution is often used to model the time between events, such as the lifespan of a product or the time until an event occurs (e.g., waiting time).</p>
+        </div>
+
+        <!-- Upload Data Section -->
+        <div class="upload-data">
+            <h2>Upload Data</h2>           
+            <input type="file" id="fileInput" accept=".txt">
+            <p id="uploadMessage" class="upload-message">If no data uploaded, then default values are used.</p>
+        </div>
+   <br>
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert-message">Data uploaded successfully</div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="graph-section">
+                <h2>Exponential Distribution Graph</h2>
+                <div class="slider-container">
+                    <label for="rateSlider">Rate Parameter (λ):</label>
+                    <input type="range" id="rateSlider" min="0.1" max="5" value="1" step="0.1">
+                    <span id="rateValue">1</span>
+                </div>
+                <div id="exponentialPlot"></div>
+            </div>
+
+            <div class="separator"></div> <!-- Vertical separator -->
+
+            <div class="calculation-section">
+                <h2>Calculation</h2>
+                <div id="calculationDetails">Calculation details will appear here.</div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Back to Selection</button>
+    </div>
+</body>
+</html>

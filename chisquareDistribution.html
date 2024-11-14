@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi-Square Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="chisquareDistribution.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Chi-Square Distribution</h1>
+
+        <!-- Distribution Information -->
+        <div class="distribution-info">
+            <h2><strong>Statistics</strong></h2>
+            <p>The Chi-Square distribution is commonly used in hypothesis testing and confidence interval estimation for variance. The formula is:</p>
+            <p style="text-align: center"><strong>f(x; k) = (1 / (2^(k/2) * Γ(k/2))) * x^(k/2-1) * exp(-x/2)</strong></p>
+            <p><em>Example:</em> It is used in statistical tests such as the Chi-Square test for independence or goodness of fit.</p>
+        </div>
+
+        <!-- Upload Data Section -->
+        <div class="upload-data">
+            <h2>Upload Data</h2>
+            <input type="file" id="fileInput" accept=".txt">
+            <p id="uploadMessage" class="upload-message">If no data is uploaded, default values are used.</p>
+        </div>
+        <br>
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert-message">Data uploaded successfully</div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="graph-section">
+                <h2>Chi-Square Distribution Graph</h2>
+                <div class="slider-container">
+                    <label for="dfSlider">Degrees of Freedom (k):</label>
+                    <input type="range" id="dfSlider" min="1" max="20" value="2" step="1">
+                    <span id="dfValue">2</span>
+                </div>
+                <div id="chisquarePlot"></div>
+            </div>
+
+            <div class="separator"></div> <!-- Vertical separator -->
+
+            <div class="calculation-section">
+                <h2>Calculation</h2>
+                <div id="calculationDetails">Calculation details will appear here.</div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Back to Selection</button>
+    </div>
+</body>
+</html>

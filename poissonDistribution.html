@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poisson Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="poissonDistribution.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Poisson Distribution</h1>
+
+        <!-- Distribution Information -->
+        <div class="distribution-info">
+            <h2><strong>Statistics</strong></h2>
+            <p>For a random variable x, the Poisson distribution formula is given by:</p>
+            <p style="text-align: center"><strong>P(X=k) = (λ^k * e^(-λ)) / k!</strong></p>
+            <p><em>Example:</em> This could represent the number of customer arrivals at a shop in a given time period, where λ represents the average number of arrivals.</p>
+        </div>
+
+        <!-- Upload Data Section -->
+        <div class="upload-data">
+            <h2>Upload Data</h2>
+            <input type="file" id="fileInput" accept=".txt">
+            <p id="uploadMessage" class="upload-message">If no data uploaded, then default values are used.</p>
+        </div>
+        <br>
+        
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert-message">Data uploaded successfully</div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="graph-section">
+                <h2>Poisson Distribution Graph</h2>
+                <div class="slider-container">
+                    <label for="lambdaSlider">Lambda (λ) :</label>
+                    <input type="range" id="lambdaSlider" min="0.1" max="10" value="3" step="0.1">
+                    <span id="lambdaValue">3</span>
+                </div>
+                <div id="poissonPlot"></div>
+            </div>
+
+            <div class="separator"></div> <!-- Vertical separator -->
+
+            <div class="calculation-section">
+                <h2>Calculation</h2>
+                <div id="calculationDetails">Calculation details will appear here.</div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Back to Selection</button>
+    </div>
+</body>
+</html>

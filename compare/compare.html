@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Distributions</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .plot-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px;
+        }
+        .plot {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Comparison of Statistical Distributions</h1>
+    <div class="plot-container">
+        <div id="normal" class="plot"></div>
+        <div id="binomial" class="plot"></div>
+        <div id="poisson" class="plot"></div>
+        <div id="exponential" class="plot"></div>
+        <div id="uniform" class="plot"></div>
+        <div id="geometric" class="plot"></div>
+        <div id="chiSquare" class="plot"></div>
+        <div id="beta" class="plot"></div>
+    </div>
+
+    <script src="compare.js"></script>
+</body>
+</html>

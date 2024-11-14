@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beta Distribution</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="betaDistribution.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Beta Distribution</h1>
+
+        <!-- Distribution Information -->
+        <div class="distribution-info">
+            <h2><strong>Statistics</strong></h2>
+            <p>The Beta distribution is a family of continuous probability distributions defined on the interval [0, 1], and parameterized by two positive shape parameters, "α" (alpha) and "β" (beta). The formula is given by:</p>
+            <p style="text-align: center"><strong>f(x; α, β) = x^(α-1) * (1-x)^(β-1) / B(α, β)</strong></p>
+            <p><em>Example:</em> The Beta distribution is commonly used to model the behavior of random variables limited to intervals of finite length in a variety of disciplines.</p>
+        </div>
+
+        <!-- Upload Data Section -->
+        <div class="upload-data">
+           <h2>Upload Data</h2>
+            <input type="file" id="fileInput" accept=".txt">
+            <p id="uploadMessage" class="upload-message">If no data is uploaded, default values are used.</p>
+        </div>
+        <br>
+        <!-- Alert Message -->
+        <div id="alertMessage" class="alert-message">Data uploaded successfully</div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="graph-section">
+                <h2>Beta Distribution Graph</h2>
+                <div class="slider-container">
+                    <label for="alphaSlider">Alpha (α):</label>
+                    <input type="range" id="alphaSlider" min="0.1" max="10" value="2" step="0.1">
+                    <span id="alphaValue">2</span>
+                </div>
+                <div class="slider-container">
+                    <label for="betaSlider">Beta (β):</label>
+                    <input type="range" id="betaSlider" min="0.1" max="10" value="2" step="0.1">
+                    <span id="betaValue">2</span>
+                </div>
+                <div id="betaPlot"></div>
+            </div>
+
+            <div class="separator"></div> <!-- Vertical separator -->
+
+            <div class="calculation-section">
+                <h2>Calculation</h2>
+                <div id="calculationDetails">Calculation details will appear here.</div>
+            </div>
+        </div>
+        <button onclick="location.href='index.html'">Back to Selection</button>
+    </div>
+</body>
+</html>
